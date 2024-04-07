@@ -21,12 +21,15 @@ dev = [
 
 [tool.ruff]
 extend-include = ["*.ipynb"]
-include = ["pyproject.toml", "src/*"]
+include = ["pyproject.toml", "src/**"]
 
 line-length = 120
 indent-width = 4
 
 target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
 
 [tool.ruff.format]
 quote-style = "double"
