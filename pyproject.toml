@@ -1,0 +1,38 @@
+[project]
+name = "MLOps project"
+version = "0.1.0"
+dependencies = [
+    "numpy==1.26",
+    "pandas==2.2",
+]
+requires-python = ">=3.11"
+authors = [
+    {name = "Mikhail Borisochkin", email = "rdcool1000@gmail.com"},
+]
+description = "Репозиторий проекта по курсу MLOps от ODS"
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.3.5",
+    "mypy==1.9.0",
+    "pre-commit==3.7.0",
+]
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+include = ["pyproject.toml", "src/*"]
+
+line-length = 120
+indent-width = 4
+
+target-version = "py311"
+
+[tool.ruff.format]
+quote-style = "double"
+
+indent-style = "space"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
