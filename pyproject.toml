@@ -1,17 +1,25 @@
 [project]
-name = "MLOps project"
-version = "0.1.0"
+name = "MLOps project" # Название проекта
+version = "0.1.0" # Версия проекта
+
+# Обязательные зависимости
 dependencies = [
     "numpy==1.26",
     "pandas==2.2",
 ]
+
+# Минимальная версия Python
 requires-python = ">=3.11"
+
+# Авторы проекта
 authors = [
     {name = "Mikhail Borisochkin", email = "rdcool1000@gmail.com"},
 ]
-description = "Репозиторий проекта по курсу MLOps от ODS"
+
+description = "Репозиторий проекта по курсу MLOps от ODS" # Описание проекта
 readme = "README.md"
 
+# Дополнительные зависимости (например, dev)
 [project.optional-dependencies]
 dev = [
     "ruff==0.3.5",
@@ -19,20 +27,23 @@ dev = [
     "pre-commit==3.7.0",
 ]
 
+# Общие настройки Ruff
 [tool.ruff]
 extend-include = ["*.ipynb"]
-include = ["pyproject.toml", "src/**"]
+include = ["pyproject.toml", "src/*"]
 
 line-length = 120
 indent-width = 4
 
 target-version = "py311"
 
+# Настройки линтера
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "Q"]
 
+# Настройки форматера
 [tool.ruff.format]
-quote-style = "double"
+quote-style = "double
 
 indent-style = "space"
 
