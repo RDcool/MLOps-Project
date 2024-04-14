@@ -1,0 +1,22 @@
+# Общие настройки Ruff
+extend-include = ["*.ipynb"]
+include = ["pyproject.toml", "src/*"]
+
+line-length = 120
+indent-width = 4
+
+target-version = "py311"
+
+# Настройки линтера
+[lint]
+select = ["E", "F", "I", "Q"]
+
+# Настройки форматера
+[format]
+quote-style = "double"
+
+indent-style = "space"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
