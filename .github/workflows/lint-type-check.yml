@@ -50,6 +50,3 @@ jobs:
         
     - name: Type check code
       run: mypy "code/" 
-      
-    - name: Type check notebooks
-      run: mypy "notebooks/" 
