@@ -13,3 +13,5 @@ dependencies:
   - ruff
   - pre-commit
   - mypy
+  - quarto
+  - itables
