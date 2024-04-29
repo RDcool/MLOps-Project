@@ -2,6 +2,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
+    paths: ["docs/*"]
 
 name: Quarto Publish
 
@@ -16,12 +17,17 @@ jobs:
         
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-
+        
+      - name: Setup mamba environment
+        uses: mamba-org/setup-micromamba@v1.8.1
+        with:
+             environment-file: enviroment.yml
+             
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
           path: docs/
-          render: false
+          render: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
