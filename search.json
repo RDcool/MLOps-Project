@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "EDA.html#проверка-пустых-значений",
+    "href": "EDA.html#проверка-пустых-значений",
+    "title": "ML-Ops Project. Документация",
+    "section": "Проверка пустых значений",
+    "text": "Проверка пустых значений\n\n\nКод\n# Количество пропущенных значений\ndata.isnull().sum()\n\n\ntree_id                  0\nblock_id                 0\ncreated_at               0\ntree_dbh                 0\nstump_diam               0\ncurb_loc                 0\nstatus                   0\nhealth               31616\nspc_latin            31619\nspc_common           31619\nsteward             519438\nguards              603922\nsidewalk             31616\nuser_type                0\nproblems            457944\nroot_stone               0\nroot_grate               0\nroot_other               0\ntrunk_wire               0\ntrnk_light               0\ntrnk_other               0\nbrch_light               0\nbrch_shoe                0\nbrch_other               0\naddress                  0\npostcode                 0\nzip_city                 0\ncommunity board          0\nborocode                 0\nborough                  0\ncncldist                 0\nst_assem                 0\nst_senate                0\nnta                      0\nnta_name                 0\nboro_ct                  0\nstate                    0\nlatitude                 0\nlongitude                0\nx_sp                     0\ny_sp                     0\ncouncil district      6519\ncensus tract          6519\nbin                   9559\nbbl                   9559\ndtype: int64\n\n\nИз 45 колонок в 11 присутствуют пропуски значений. Проверим в каких из них процент пропусков больше пяти.\n\n\nКод\n# True - значение пропущено\ncolumns_with_na = [column for column in data.columns if (data[column].isnull().sum()) / data[column].size &gt; 0.05]\n\nfor column in columns_with_na:\n    # missing_values = data[column].isnull().apply(lambda x: \"Пустые значения\" if x else \"Непустые значения\")\n    fig = px.pie(\n        data,\n        names=data[column].isnull(),\n        title=f\"Пропущенные значения для колонки {column}\",\n        hole=0.3,\n        # color=data[column].isnull(),\n        # color_discrete_map={True: \"red\", False: \"blue\"},\n    )\n    # fig.update_layout(showlegend=False)\n    fig.show()\n\n\n\n\n\n\n\n                                                \n\n\n(a) Steward\n\n\n\n\n\n\n                                                \n\n\n(b) Guards\n\n\n\n\n\n\n                                                \n\n\n(c) Problems\n\n\n\n\n\nРисунок 1: Пропущенные значения в колонках\n\n\n\n\nУ признаков steward, guards и problems слишком много пропущенных значений. У остальных признаков с пропущенными значениями их процент меньше пяти."
+  },
+  {
+    "objectID": "EDA.html#корреляционный-анализ",
+    "href": "EDA.html#корреляционный-анализ",
+    "title": "ML-Ops Project. Документация",
+    "section": "Корреляционный анализ",
+    "text": "Корреляционный анализ\nПроверим корреляцию между числовыми признаками.\n\n\nКод\nsns.pairplot(data[[\"tree_dbh\", \"stump_diam\", \"borocode\", \"st_senate\", \"x_sp\", \"y_sp\"]])\nplt.show()\n\n\n\n\n\n\n\n\nРисунок 2: Парные диаграммы\n\n\n\n\n\nИз парных графиков наблюдаем некоторую корреляцию между признаками x_sp и y_sp. Также по гистограммам хорошо видно, что данные разных признаков лежат в разных диапазонах.\nПроверим корреляцию между признаками более точно с помощью корреляционной матрицы.\n\n\nКод\n# Тепловая карта корреляционной матрицы\n_, ax = plt.subplots(figsize=(15, 15))\nsns.heatmap(data.corr(numeric_only=True), annot=True, ax=ax, fmt=\"0.2f\", cmap=\"YlGnBu\")\nplt.show()\n\n\n\n\n\n\n\n\nРисунок 3: Тепловая карта корреляционной матрицы\n\n\n\n\n\nПо корреляционной матрице наблюдаются группы линейно зависимых признаков. Например, latitude и y_sp, longitude и x_sp, bin и bbl, community board и borocode и т. д. Также присутствует сильная корреляция между признаками council district и latitude, st_assem и st_senate."
+  },
+  {
+    "objectID": "EDA.html#просмотр-объектов-на-карте",
+    "href": "EDA.html#просмотр-объектов-на-карте",
+    "title": "ML-Ops Project. Документация",
+    "section": "Просмотр объектов на карте",
+    "text": "Просмотр объектов на карте\nРассмотрим небольшую выборку деревьев на карте.\n\n\nКод\n# Создание карты\nm = folium.Map(location=(data[\"latitude\"].mean(), data[\"longitude\"].mean()), max_bounds=True, prefer_canvas=True)\n\n# Добавление меток\ndata_to_show = data[[\"tree_id\", \"health\", \"status\", \"latitude\", \"longitude\"]].copy().sample(200, random_state=1)\nfor i in range(len(data_to_show)):\n    tree = data_to_show.iloc[i]\n    color = \"red\" if tree.status == \"Dead\" or tree.status == \"Stump\" else \"green\"\n    folium.Marker(\n        [tree.latitude, tree.longitude],\n        popup=f\"Tree ID: {tree.tree_id}\\n Health: {tree.health}\\n Status: {tree.status}\",\n        icon=folium.Icon(color=color),\n    ).add_to(m)\n\n# Вывод карты\nm\n\n\nMake this Notebook Trusted to load map: File -&gt; Trust Notebook\n\n\nПо карте нельзя выделить отдельный район, где большинство деревьев сухие или пни."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Проект по MLOps",
+    "section": "",
+    "text": "В данном репозитории расположен проект по курсу MLOps и production в DS исследованиях 3.0 от ODS.\n\n\nАвтор решил развивать репозиторий по методологии Data Science Lifecycle Process.\n\n\n\nПро внесение крутых фичей в проект можно почитать тут.\n\n\n\nВ проекте используется пакетный менеджер mamba. Существуют следующие окружения:\n\nDSLab. Окружение по умолчанию. Зависимости окружения зафиксированы в файле environment.yml\nDSLabDev. Окружение для разработки, отличается наличием линтера и форматора. Зависимости окружения зафиксированы в файле environment-dev.yml\n\n\n\n\nДля воспроизводимости экспериментов был создан Dockerfile для создания образа с необходимыми зависимостями. Чтобы им воспользоваться склонируйте репозиторий на свой компьютер и напишите в терминале следующие команды: - Создание образа:\ndocker build . -t &lt;название образа&gt;\n\nЗапуск контейнера:\n\ndocker run -p 8888:8888 -v &lt;папка, куда Вы хотите сохранять блокноты&gt; --name &lt;название контейнера&gt; --user root --rm &lt;название образа&gt;\nТакже можно создать окружение с окружением для разработки. Для этого в Dockerfile необходимо поменять название файла с зависимостями и название окружения."
+  },
+  {
+    "objectID": "index.html#методология",
+    "href": "index.html#методология",
+    "title": "Проект по MLOps",
+    "section": "",
+    "text": "Автор решил развивать репозиторий по методологии Data Science Lifecycle Process."
+  },
+  {
+    "objectID": "index.html#contributing",
+    "href": "index.html#contributing",
+    "title": "Проект по MLOps",
+    "section": "",
+    "text": "Про внесение крутых фичей в проект можно почитать тут."
+  },
+  {
+    "objectID": "index.html#используемые-окружения",
+    "href": "index.html#используемые-окружения",
+    "title": "Проект по MLOps",
+    "section": "",
+    "text": "В проекте используется пакетный менеджер mamba. Существуют следующие окружения:\n\nDSLab. Окружение по умолчанию. Зависимости окружения зафиксированы в файле environment.yml\nDSLabDev. Окружение для разработки, отличается наличием линтера и форматора. Зависимости окружения зафиксированы в файле environment-dev.yml"
+  },
+  {
+    "objectID": "index.html#использование-docker-контейнера",
+    "href": "index.html#использование-docker-контейнера",
+    "title": "Проект по MLOps",
+    "section": "",
+    "text": "Для воспроизводимости экспериментов был создан Dockerfile для создания образа с необходимыми зависимостями. Чтобы им воспользоваться склонируйте репозиторий на свой компьютер и напишите в терминале следующие команды: - Создание образа:\ndocker build . -t &lt;название образа&gt;\n\nЗапуск контейнера:\n\ndocker run -p 8888:8888 -v &lt;папка, куда Вы хотите сохранять блокноты&gt; --name &lt;название контейнера&gt; --user root --rm &lt;название образа&gt;\nТакже можно создать окружение с окружением для разработки. Для этого в Dockerfile необходимо поменять название файла с зависимостями и название окружения."
+  }
+]
