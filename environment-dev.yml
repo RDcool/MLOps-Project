@@ -1,0 +1,17 @@
+name: DSLabDev
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - jupyter
+  - pandas
+  - scikit-learn
+  - seaborn
+  - folium
+  - plotly
+  - ruff
+  - pre-commit
+  - mypy
+  - quarto
+  - itables
