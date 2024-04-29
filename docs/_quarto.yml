@@ -1,0 +1,22 @@
+project:
+  type: website
+  render:
+    - "index.qmd"
+    - "EDA.ipynb"
+
+website:
+  title: "ML-Ops Project. Документация"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Главная
+      - EDA.ipynb
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+
