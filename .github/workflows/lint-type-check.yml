@@ -1,0 +1,55 @@
+name: Linting and type checking
+
+on:
+  push:
+    paths: ["code/*", "notebooks/*"]
+  pull_request:
+    branches: ["main"]
+    paths: ["code/*", "notebooks/*"] 
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4.1.4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5.1.0
+      with: 
+        python-version: '3.11'
+        
+    - name: Install Ruff
+      run: pip install ruff
+
+    - name: Lint code
+      run: ruff check "code/" --config ruff.toml
+
+    - name: Lint notebooks
+      run: ruff check "notebooks/" --config ruff.toml
+
+  type-checking:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4.1.4
+  
+    - name: Setup Python
+      uses: actions/setup-python@v5.1.0
+      with: 
+        python-version: '3.11'
+      
+    - name: Install Mypy
+      run: pip install mypy
+        
+    - name: Type check code
+      run: mypy "code/" 
+      
+    - name: Type check notebooks
+      run: mypy "notebooks/" 
