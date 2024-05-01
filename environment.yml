@@ -1,7 +1,6 @@
 name: DSLab
 channels:
   - conda-forge
-  - bioconda
   - defaults
 dependencies:
   - python=3.11
