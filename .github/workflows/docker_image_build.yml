@@ -5,7 +5,7 @@ on:
     branches: ["main"]
     paths:
     - "Dockerfile"
-    - "enviroment.yml"
+    - "environment.yml"
 
 env:
   REGISTRY: ghcr.io
